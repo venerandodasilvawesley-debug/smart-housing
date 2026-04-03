@@ -3,14 +3,18 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from app.database import engine
+from app import models
 from app.routes import colaboradores, quartos, alocacoes, manutencoes, auth
+
+models.Base.metadata.create_all(bind=engine)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Smart Housing API", version="1.0.0")
 
-# CORS — ajuste os domínios permitidos em produção
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:8080"],
