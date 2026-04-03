@@ -1,6 +1,25 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
 from app import models, schemas
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+# ── Usuarios ─────────────────────────────────────────────────
+def get_usuario_by_username(db: Session, username: str):
+    return db.query(models.Usuario).filter(models.Usuario.username == username).first()
+
+def create_usuario(db: Session, data: schemas.UsuarioCreate):
+    hashed = pwd_context.hash(data.password)
+    obj = models.Usuario(username=data.username, hashed_password=hashed)
+    db.add(obj)
+    db.commit()
+    db.refresh(obj)
+    return obj
+
+def verificar_senha(plain: str, hashed: str) -> bool:
+    return pwd_context.verify(plain, hashed)
 
 
 # ── Colaboradores ────────────────────────────────────────────

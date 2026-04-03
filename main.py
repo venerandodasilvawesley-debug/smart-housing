@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
-from app.routes import colaboradores, quartos, alocacoes, manutencoes
+from app.routes import colaboradores, quartos, alocacoes, manutencoes, auth
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,6 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
 app.include_router(colaboradores.router)
 app.include_router(quartos.router)
 app.include_router(alocacoes.router)

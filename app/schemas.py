@@ -3,6 +3,23 @@ from typing import Literal, Optional
 from datetime import date, datetime
 
 
+# ── Autenticação ─────────────────────────────────────────────
+class UsuarioCreate(BaseModel):
+    username: str = Field(min_length=3, max_length=50)
+    password: str = Field(min_length=6, max_length=100)
+
+class UsuarioRead(BaseModel):
+    id: int
+    username: str
+    ativo: bool
+    class Config:
+        from_attributes = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
 # ── Colaborador ──────────────────────────────────────────────
 class ColaboradorBase(BaseModel):
     nome: str = Field(min_length=1, max_length=100)

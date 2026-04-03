@@ -1,6 +1,13 @@
 from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey, TIMESTAMP
 from app.database import Base
 
+class Usuario(Base):
+    __tablename__ = "usuarios"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, nullable=False)
+    hashed_password = Column(String(200), nullable=False)
+    ativo = Column(Boolean, default=True)
+
 class Colaborador(Base):
     __tablename__ = "colaboradores"
     id = Column(Integer, primary_key=True, index=True)
