@@ -13,8 +13,8 @@ def get_db():
         db.close()
 
 @router.get("/", response_model=list[schemas.QuartoRead])
-def listar_quartos(db: Session = Depends(get_db)):
-    return crud.get_quartos(db)
+def listar_quartos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_quartos(db, skip=skip, limit=limit)
 
 @router.get("/{quarto_id}", response_model=schemas.QuartoRead)
 def buscar_quarto(quarto_id: int, db: Session = Depends(get_db)):

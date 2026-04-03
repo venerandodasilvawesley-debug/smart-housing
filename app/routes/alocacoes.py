@@ -13,8 +13,8 @@ def get_db():
         db.close()
 
 @router.get("/", response_model=list[schemas.AlocacaoRead])
-def listar_alocacoes(db: Session = Depends(get_db)):
-    return crud.get_alocacoes(db)
+def listar_alocacoes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_alocacoes(db, skip=skip, limit=limit)
 
 @router.get("/{alocacao_id}", response_model=schemas.AlocacaoRead)
 def buscar_alocacao(alocacao_id: int, db: Session = Depends(get_db)):
@@ -25,6 +25,10 @@ def buscar_alocacao(alocacao_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=schemas.AlocacaoRead, status_code=201)
 def criar_alocacao(data: schemas.AlocacaoCreate, db: Session = Depends(get_db)):
+    if not crud.get_colaborador(db, data.colaborador_id):
+        raise HTTPException(status_code=404, detail="Colaborador não encontrado")
+    if not crud.get_quarto(db, data.quarto_id):
+        raise HTTPException(status_code=404, detail="Quarto não encontrado")
     return crud.create_alocacao(db, data)
 
 @router.put("/{alocacao_id}", response_model=schemas.AlocacaoRead)

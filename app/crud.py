@@ -4,8 +4,8 @@ from app import models, schemas
 
 
 # ── Colaboradores ────────────────────────────────────────────
-def get_colaboradores(db: Session):
-    return db.query(models.Colaborador).all()
+def get_colaboradores(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Colaborador).offset(skip).limit(limit).all()
 
 def get_colaborador(db: Session, colaborador_id: int):
     return db.query(models.Colaborador).filter(models.Colaborador.id == colaborador_id).first()
@@ -37,8 +37,8 @@ def delete_colaborador(db: Session, colaborador_id: int):
 
 
 # ── Quartos ──────────────────────────────────────────────────
-def get_quartos(db: Session):
-    return db.query(models.Quarto).all()
+def get_quartos(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Quarto).offset(skip).limit(limit).all()
 
 def get_quarto(db: Session, quarto_id: int):
     return db.query(models.Quarto).filter(models.Quarto.id == quarto_id).first()
@@ -70,8 +70,8 @@ def delete_quarto(db: Session, quarto_id: int):
 
 
 # ── Alocacoes ────────────────────────────────────────────────
-def get_alocacoes(db: Session):
-    return db.query(models.Alocacao).all()
+def get_alocacoes(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Alocacao).offset(skip).limit(limit).all()
 
 def get_alocacao(db: Session, alocacao_id: int):
     return db.query(models.Alocacao).filter(models.Alocacao.id == alocacao_id).first()
@@ -103,8 +103,8 @@ def delete_alocacao(db: Session, alocacao_id: int):
 
 
 # ── Manutencoes ──────────────────────────────────────────────
-def get_manutencoes(db: Session):
-    return db.query(models.Manutencao).all()
+def get_manutencoes(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Manutencao).offset(skip).limit(limit).all()
 
 def get_manutencao(db: Session, manutencao_id: int):
     return db.query(models.Manutencao).filter(models.Manutencao.id == manutencao_id).first()

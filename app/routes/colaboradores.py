@@ -13,8 +13,8 @@ def get_db():
         db.close()
 
 @router.get("/", response_model=list[schemas.ColaboradorRead])
-def listar_colaboradores(db: Session = Depends(get_db)):
-    return crud.get_colaboradores(db)
+def listar_colaboradores(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_colaboradores(db, skip=skip, limit=limit)
 
 @router.get("/{colaborador_id}", response_model=schemas.ColaboradorRead)
 def buscar_colaborador(colaborador_id: int, db: Session = Depends(get_db)):

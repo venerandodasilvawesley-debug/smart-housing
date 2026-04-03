@@ -1,23 +1,23 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
+from typing import Literal, Optional
 from datetime import date, datetime
 
 
 # ── Colaborador ──────────────────────────────────────────────
 class ColaboradorBase(BaseModel):
-    nome: str
-    documento: str
-    empresa: Optional[str] = None
-    setor: Optional[str] = None
+    nome: str = Field(min_length=1, max_length=100)
+    documento: str = Field(min_length=5, max_length=50)
+    empresa: Optional[str] = Field(None, max_length=100)
+    setor: Optional[str] = Field(None, max_length=100)
     ativo: Optional[bool] = True
 
 class ColaboradorCreate(ColaboradorBase):
     pass
 
 class ColaboradorUpdate(BaseModel):
-    nome: Optional[str] = None
-    empresa: Optional[str] = None
-    setor: Optional[str] = None
+    nome: Optional[str] = Field(None, min_length=1, max_length=100)
+    empresa: Optional[str] = Field(None, max_length=100)
+    setor: Optional[str] = Field(None, max_length=100)
     ativo: Optional[bool] = None
 
 class ColaboradorRead(ColaboradorBase):
@@ -28,17 +28,17 @@ class ColaboradorRead(ColaboradorBase):
 
 # ── Quarto ───────────────────────────────────────────────────
 class QuartoBase(BaseModel):
-    numero: int
-    capacidade: int
-    ocupacao_atual: Optional[int] = 0
+    numero: int = Field(gt=0)
+    capacidade: int = Field(gt=0, le=500)
+    ocupacao_atual: Optional[int] = Field(0, ge=0, le=500)
 
 class QuartoCreate(QuartoBase):
     pass
 
 class QuartoUpdate(BaseModel):
-    numero: Optional[int] = None
-    capacidade: Optional[int] = None
-    ocupacao_atual: Optional[int] = None
+    numero: Optional[int] = Field(None, gt=0)
+    capacidade: Optional[int] = Field(None, gt=0, le=500)
+    ocupacao_atual: Optional[int] = Field(None, ge=0, le=500)
 
 class QuartoRead(QuartoBase):
     id: int
@@ -48,8 +48,8 @@ class QuartoRead(QuartoBase):
 
 # ── Alocacao ─────────────────────────────────────────────────
 class AlocacaoBase(BaseModel):
-    colaborador_id: int
-    quarto_id: int
+    colaborador_id: int = Field(gt=0)
+    quarto_id: int = Field(gt=0)
     data_entrada: date
     data_saida: Optional[date] = None
 
@@ -66,17 +66,19 @@ class AlocacaoRead(AlocacaoBase):
 
 
 # ── Manutencao ───────────────────────────────────────────────
+STATUS_MANUTENCAO = Literal["Aberto", "Em andamento", "Fechado"]
+
 class ManutencaoBase(BaseModel):
-    quarto_id: int
-    descricao: str
-    status: Optional[str] = "Aberto"
+    quarto_id: int = Field(gt=0)
+    descricao: str = Field(min_length=5, max_length=500)
+    status: Optional[STATUS_MANUTENCAO] = "Aberto"
 
 class ManutencaoCreate(ManutencaoBase):
     pass
 
 class ManutencaoUpdate(BaseModel):
-    descricao: Optional[str] = None
-    status: Optional[str] = None
+    descricao: Optional[str] = Field(None, min_length=5, max_length=500)
+    status: Optional[STATUS_MANUTENCAO] = None
     data_fechamento: Optional[datetime] = None
 
 class ManutencaoRead(ManutencaoBase):

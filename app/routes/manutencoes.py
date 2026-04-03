@@ -13,8 +13,8 @@ def get_db():
         db.close()
 
 @router.get("/", response_model=list[schemas.ManutencaoRead])
-def listar_manutencoes(db: Session = Depends(get_db)):
-    return crud.get_manutencoes(db)
+def listar_manutencoes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_manutencoes(db, skip=skip, limit=limit)
 
 @router.get("/{manutencao_id}", response_model=schemas.ManutencaoRead)
 def buscar_manutencao(manutencao_id: int, db: Session = Depends(get_db)):
