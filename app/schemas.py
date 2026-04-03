@@ -7,13 +7,14 @@ from datetime import date, datetime
 class UsuarioCreate(BaseModel):
     username: str = Field(min_length=3, max_length=50)
     password: str = Field(min_length=6, max_length=100)
+    role: str = Field(default="user", pattern="^(admin|user)$")
 
 class UsuarioRead(BaseModel):
     id: int
     username: str
+    role: str
     ativo: bool
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
 
 class Token(BaseModel):
     access_token: str
@@ -39,8 +40,7 @@ class ColaboradorUpdate(BaseModel):
 
 class ColaboradorRead(ColaboradorBase):
     id: int
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
 
 
 # ── Quarto ───────────────────────────────────────────────────
@@ -59,8 +59,7 @@ class QuartoUpdate(BaseModel):
 
 class QuartoRead(QuartoBase):
     id: int
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
 
 
 # ── Alocacao ─────────────────────────────────────────────────
@@ -78,8 +77,7 @@ class AlocacaoUpdate(BaseModel):
 
 class AlocacaoRead(AlocacaoBase):
     id: int
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
 
 
 # ── Manutencao ───────────────────────────────────────────────
@@ -102,5 +100,4 @@ class ManutencaoRead(ManutencaoBase):
     id: int
     data_abertura: Optional[datetime] = None
     data_fechamento: Optional[datetime] = None
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}

@@ -6,6 +6,7 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False)
     hashed_password = Column(String(200), nullable=False)
+    role = Column(String(20), default="user", nullable=False)
     ativo = Column(Boolean, default=True)
 
 class Colaborador(Base):

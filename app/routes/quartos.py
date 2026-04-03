@@ -1,17 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.database import SessionLocal
+from app.database import get_db
 from app import crud, schemas
-from app.auth import get_current_user
+from app.auth import get_current_user, require_admin
 
 router = APIRouter(prefix="/quartos", tags=["Quartos"])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.get("/", response_model=list[schemas.QuartoRead])
 def listar_quartos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), _=Depends(get_current_user)):
@@ -36,7 +30,7 @@ def atualizar_quarto(quarto_id: int, data: schemas.QuartoUpdate, db: Session = D
     return obj
 
 @router.delete("/{quarto_id}")
-def deletar_quarto(quarto_id: int, db: Session = Depends(get_db), _=Depends(get_current_user)):
+def deletar_quarto(quarto_id: int, db: Session = Depends(get_db), _=Depends(require_admin)):
     obj = crud.delete_quarto(db, quarto_id)
     if not obj:
         raise HTTPException(status_code=404, detail="Quarto não encontrado")

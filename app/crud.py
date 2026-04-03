@@ -12,7 +12,7 @@ def get_usuario_by_username(db: Session, username: str):
 
 def create_usuario(db: Session, data: schemas.UsuarioCreate):
     hashed = pwd_context.hash(data.password)
-    obj = models.Usuario(username=data.username, hashed_password=hashed)
+    obj = models.Usuario(username=data.username, hashed_password=hashed, role=data.role)
     db.add(obj)
     db.commit()
     db.refresh(obj)
