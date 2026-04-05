@@ -123,9 +123,7 @@ export default function ColaboradoresPage() {
           <Alert type="error" message={error} />
           <form onSubmit={handleSubmit} className="space-y-3">
             <Field label="Nome *" value={form.nome} onChange={(v) => setForm({ ...form, nome: v })} required />
-            {modal === 'create' && (
-              <Field label="Documento *" value={form.documento} onChange={(v) => setForm({ ...form, documento: v })} required />
-            )}
+            <Field label="Documento *" value={form.documento} onChange={(v) => setForm({ ...form, documento: v })} required />
             <Field label="Empresa" value={form.empresa} onChange={(v) => setForm({ ...form, empresa: v })} />
             <Field label="Setor" value={form.setor} onChange={(v) => setForm({ ...form, setor: v })} />
             <label className="flex items-center gap-2 text-sm">

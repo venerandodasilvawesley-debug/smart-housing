@@ -34,6 +34,7 @@ class ColaboradorCreate(ColaboradorBase):
 
 class ColaboradorUpdate(BaseModel):
     nome: Optional[str] = Field(None, min_length=1, max_length=100)
+    documento: Optional[str] = Field(None, min_length=5, max_length=50)
     empresa: Optional[str] = Field(None, max_length=100)
     setor: Optional[str] = Field(None, max_length=100)
     ativo: Optional[bool] = None
