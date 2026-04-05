@@ -1,9 +1,9 @@
 """Regras de negócio para alocações."""
+from datetime import datetime
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app import models, schemas
 from app.repositories import base as repo
-from datetime import datetime
 
 
 def alocar_colaborador(db: Session, data: schemas.AlocacaoCreate) -> models.Alocacao:
@@ -29,12 +29,8 @@ def alocar_colaborador(db: Session, data: schemas.AlocacaoCreate) -> models.Aloc
     quarto.ocupacao_atual += 1
     return repo.save(db, alocacao)
 
-def desalocar_colaborador(db: Session, alocacao_id: int) -> models.Alocacao:
 
 def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
-
-def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
-
     alocacao = repo.get_by_id(db, models.Alocacao, alocacao_id)
     if not alocacao:
         raise HTTPException(status_code=404, detail="Alocação não encontrada")
@@ -44,10 +40,4 @@ def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
         quarto.ocupacao_atual -= 1
 
     repo.delete(db, alocacao)
-
-    return alocacao
-
     return {"msg": "Colaborador desalocado com sucesso"}
-
-    return {"msg": "Colaborador desalocado com sucesso"}
-
