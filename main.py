@@ -25,13 +25,6 @@ app = FastAPI(
     contact={"name": "Smart Housing", "url": "https://github.com/venerandodasilvawesley-debug/smart-housing"},
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:8080").split(","),
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["*"],
-)
 
 @app.middleware("http")
 async def cors_middleware(request: Request, call_next):
@@ -46,6 +39,7 @@ async def cors_middleware(request: Request, call_next):
     response.headers["access-control-allow-origin"] = "*"
     response.headers["access-control-allow-headers"] = "*"
     return response
+
 
 app.include_router(auth.router)
 app.include_router(colaboradores.router)
