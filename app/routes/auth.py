@@ -1,14 +1,15 @@
+import os
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app import crud, schemas
-from app.auth import create_access_token, get_db
+from app.auth import create_access_token, get_db, require_admin
 
 router = APIRouter(prefix="/auth", tags=["Autenticação"])
 
 
 @router.post("/register", response_model=schemas.UsuarioRead, status_code=201)
-def registrar(data: schemas.UsuarioCreate, db: Session = Depends(get_db)):
+def registrar(data: schemas.UsuarioCreate, db: Session = Depends(get_db), _=Depends(require_admin)):
     if crud.get_usuario_by_username(db, data.username):
         raise HTTPException(status_code=400, detail="Username já cadastrado")
     return crud.create_usuario(db, data)
@@ -23,5 +24,5 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
             detail="Usuário ou senha incorretos",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    token = create_access_token({"sub": user.username})
+    token = create_access_token({"sub": user.username, "role": user.role})
     return {"access_token": token, "token_type": "bearer"}

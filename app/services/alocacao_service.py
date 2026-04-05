@@ -30,7 +30,11 @@ def alocar_colaborador(db: Session, data: schemas.AlocacaoCreate) -> models.Aloc
     return repo.save(db, alocacao)
 
 
+<<<<<<< HEAD
 def desalocar_colaborador(db: Session, alocacao_id: int) -> models.Alocacao:
+=======
+def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
+>>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
     alocacao = repo.get_by_id(db, models.Alocacao, alocacao_id)
     if not alocacao:
         raise HTTPException(status_code=404, detail="Alocação não encontrada")
@@ -40,4 +44,8 @@ def desalocar_colaborador(db: Session, alocacao_id: int) -> models.Alocacao:
         quarto.ocupacao_atual -= 1
 
     repo.delete(db, alocacao)
+<<<<<<< HEAD
     return alocacao
+=======
+    return {"msg": "Colaborador desalocado com sucesso"}
+>>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5

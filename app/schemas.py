@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from typing import Literal, Optional
 from datetime import date, datetime
 
@@ -70,7 +70,11 @@ class AlocacaoBase(BaseModel):
     data_saida: Optional[date] = None
 
 class AlocacaoCreate(AlocacaoBase):
-    pass
+    @model_validator(mode="after")
+    def validar_datas(self):
+        if self.data_saida and self.data_saida < self.data_entrada:
+            raise ValueError("data_saida deve ser igual ou posterior a data_entrada")
+        return self
 
 class AlocacaoUpdate(BaseModel):
     data_saida: Optional[date] = None

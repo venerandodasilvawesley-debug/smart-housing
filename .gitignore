@@ -5,5 +5,8 @@ __pycache__/
 .env
 *.log
 *.~
+<<<<<<< HEAD
 *.~
+=======
+>>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
 test.db

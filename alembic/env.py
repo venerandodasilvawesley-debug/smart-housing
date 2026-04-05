@@ -12,7 +12,14 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Injeta DATABASE_URL do .env
+<<<<<<< HEAD
 config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
+=======
+database_url = os.getenv("DATABASE_URL")
+if not database_url:
+    raise ValueError("DATABASE_URL não definida. Configure a variável de ambiente.")
+config.set_main_option("sqlalchemy.url", database_url)
+>>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
 
 from app.models import Base  # noqa: E402
 target_metadata = Base.metadata
