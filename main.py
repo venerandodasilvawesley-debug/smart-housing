@@ -12,7 +12,19 @@ models.Base.metadata.create_all(bind=engine)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Smart Housing API", version="1.0.0")
+app = FastAPI(
+    title="Smart Housing API",
+    version="1.0.0",
+    description=(
+        "API para gerenciamento de alojamentos de colaboradores.\n\n"
+        "## Autenticação\n"
+        "Use `POST /auth/token` para obter um Bearer Token e clique em **Authorize** acima.\n\n"
+        "## Permissões\n"
+        "- **user** — leitura e criação em todos os recursos\n"
+        "- **admin** — inclui operações de exclusão"
+    ),
+    contact={"name": "Smart Housing", "url": "https://github.com/venerandodasilvawesley-debug/smart-housing"},
+)
 
 
 app.add_middleware(
