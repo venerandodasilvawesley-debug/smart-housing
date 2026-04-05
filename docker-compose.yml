@@ -1,15 +1,14 @@
-<<<<<<< HEAD
+
 version: "3.9"
 
-=======
->>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
+
 services:
   db:
     image: postgres:15-alpine
     container_name: smart_housing_db
     restart: unless-stopped
     environment:
-<<<<<<< HEAD
+
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "rm$2020"
       POSTGRES_DB: smart_housing
@@ -17,7 +16,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-=======
+
       POSTGRES_USER: ${POSTGRES_USER:-wesley}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-troque_esta_senha}
       POSTGRES_DB: ${POSTGRES_DB:-smart_housing}
@@ -30,7 +29,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
->>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
+
 
   api:
     build: .
@@ -46,7 +45,7 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-wesley}:${POSTGRES_PASSWORD:-troque_esta_senha}@db:5432/${POSTGRES_DB:-smart_housing}
->>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
+
       SECRET_KEY: ${SECRET_KEY}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
     ports:
