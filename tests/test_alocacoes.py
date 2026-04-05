@@ -1,5 +1,9 @@
 from tests.conftest import auth
 
+
+from datetime import date, timedelta
+
+
 from datetime import date, timedelta
 
 
@@ -65,8 +69,6 @@ def test_alocar_quarto_inexistente(client, admin_token):
         "data_entrada": str(date.today())
     }, headers=auth(admin_token))
     assert r.status_code == 404
-    
-
 
 def test_data_saida_anterior_entrada_bloqueada(client, admin_token):
     """data_saida anterior a data_entrada deve retornar 422."""
@@ -126,5 +128,3 @@ def test_deletar_colaborador_com_alocacao_ativa_bloqueado(client, admin_token):
 
     r = client.delete(f"/colaboradores/{c.json()['id']}", headers=auth(admin_token))
     assert r.status_code == 409
-
-

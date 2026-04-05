@@ -19,13 +19,13 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-
     op.add_column('usuarios', sa.Column('role', sa.String(length=20), nullable=False, server_default='user'))
 
     # role já criado na migration inicial (a504b2bccfd6)
     pass
 
-
+    # role já criado na migration inicial (a504b2bccfd6)
+    pass
 
 def downgrade() -> None:
     """Downgrade schema."""

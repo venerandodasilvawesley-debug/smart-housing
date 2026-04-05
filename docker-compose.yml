@@ -1,6 +1,4 @@
-
 version: "3.9"
-
 
 services:
   db:
@@ -16,7 +14,6 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
       POSTGRES_USER: ${POSTGRES_USER:-wesley}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-troque_esta_senha}
       POSTGRES_DB: ${POSTGRES_DB:-smart_housing}
@@ -30,22 +27,15 @@ services:
       timeout: 5s
       retries: 10
 
-
-  api:
+api:
     build: .
     container_name: smart_housing_api
     restart: unless-stopped
     depends_on:
-<<<<<<< HEAD
-      - db
-    environment:
-      DATABASE_URL: 'postgresql+asyncpg://postgres:rm$2020@db:5432/smart_housing'
-=======
       db:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-wesley}:${POSTGRES_PASSWORD:-troque_esta_senha}@db:5432/${POSTGRES_DB:-smart_housing}
-
       SECRET_KEY: ${SECRET_KEY}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
     ports:

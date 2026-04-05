@@ -29,9 +29,9 @@ def alocar_colaborador(db: Session, data: schemas.AlocacaoCreate) -> models.Aloc
     quarto.ocupacao_atual += 1
     return repo.save(db, alocacao)
 
-
-
 def desalocar_colaborador(db: Session, alocacao_id: int) -> models.Alocacao:
+
+def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
 
 def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
 
@@ -46,6 +46,8 @@ def desalocar_colaborador(db: Session, alocacao_id: int) -> dict:
     repo.delete(db, alocacao)
 
     return alocacao
+
+    return {"msg": "Colaborador desalocado com sucesso"}
 
     return {"msg": "Colaborador desalocado com sucesso"}
 
