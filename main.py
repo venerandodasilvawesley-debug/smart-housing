@@ -28,11 +28,12 @@ app = FastAPI(
 )
 
 
+_origins = os.getenv("ALLOWED_ORIGINS", "*")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:8080").split(","),
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_origins=["*"] if _origins == "*" else _origins.split(","),
+    allow_credentials=False,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
