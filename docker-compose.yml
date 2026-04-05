@@ -3,10 +3,11 @@ version: "3.9"
 services:
   db:
     image: postgres:15-alpine
+    container_name: smart_housing_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: wesley
-      POSTGRES_PASSWORD: 1700
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "rm$2020"
       POSTGRES_DB: smart_housing
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -15,11 +16,12 @@ services:
 
   api:
     build: .
+    container_name: smart_housing_api
     restart: unless-stopped
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://wesley:1700@db:5432/smart_housing
+      DATABASE_URL: 'postgresql+asyncpg://postgres:rm$2020@db:5432/smart_housing'
       SECRET_KEY: ${SECRET_KEY}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
     ports:
