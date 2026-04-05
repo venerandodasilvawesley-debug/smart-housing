@@ -32,7 +32,13 @@ app.include_router(manutencoes.router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
-    return JSONResponse(status_code=422, content={"detail": "Dados de entrada inválidos", "errors": exc.errors()})
+    safe_errors = []
+    for e in exc.errors():
+        safe_e = {k: v for k, v in e.items() if k != "input"}
+        if "ctx" in safe_e:
+            safe_e["ctx"] = {k: str(v) for k, v in safe_e["ctx"].items()}
+        safe_errors.append(safe_e)
+    return JSONResponse(status_code=422, content={"detail": "Dados de entrada inválidos", "errors": safe_errors})
 
 
 @app.exception_handler(Exception)

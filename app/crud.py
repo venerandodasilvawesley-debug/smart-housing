@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
+from fastapi import HTTPException
 from app import models, schemas
 from passlib.context import CryptContext
 
@@ -50,6 +51,12 @@ def delete_colaborador(db: Session, colaborador_id: int):
     obj = get_colaborador(db, colaborador_id)
     if not obj:
         return None
+    ativa = db.query(models.Alocacao).filter(
+        models.Alocacao.colaborador_id == colaborador_id,
+        models.Alocacao.data_saida == None  # noqa: E711
+    ).first()
+    if ativa:
+        raise HTTPException(status_code=409, detail="Colaborador possui alocação ativa e não pode ser removido")
     db.delete(obj)
     db.commit()
     return obj
@@ -83,6 +90,12 @@ def delete_quarto(db: Session, quarto_id: int):
     obj = get_quarto(db, quarto_id)
     if not obj:
         return None
+    ativa = db.query(models.Alocacao).filter(
+        models.Alocacao.quarto_id == quarto_id,
+        models.Alocacao.data_saida == None  # noqa: E711
+    ).first()
+    if ativa:
+        raise HTTPException(status_code=409, detail="Quarto possui alocação ativa e não pode ser removido")
     db.delete(obj)
     db.commit()
     return obj
