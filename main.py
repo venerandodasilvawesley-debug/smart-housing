@@ -1,8 +1,6 @@
-import os
 import logging
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse, Response
 from fastapi.exceptions import RequestValidationError
 from app.database import engine
 from app import models
@@ -34,6 +32,20 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def cors_middleware(request: Request, call_next):
+    if request.method == "OPTIONS":
+        response = Response(status_code=200)
+        response.headers["access-control-allow-origin"] = "*"
+        response.headers["access-control-allow-methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["access-control-allow-headers"] = "*"
+        response.headers["access-control-max-age"] = "600"
+        return response
+    response = await call_next(request)
+    response.headers["access-control-allow-origin"] = "*"
+    response.headers["access-control-allow-headers"] = "*"
+    return response
 
 app.include_router(auth.router)
 app.include_router(colaboradores.router)
