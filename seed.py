@@ -44,7 +44,7 @@ def seed():
         # Alocações
         ana = db.query(models.Colaborador).filter_by(documento="11111111111").first()
         q101 = db.query(models.Quarto).filter_by(numero=101).first()
-        if ana and q101 and not db.query(models.Alocacao).filter_by(colaborador_id=ana.id).first():
+        if ana and q101 and not db.query(models.Alocacao).filter_by(colaborador_id=ana.id, data_saida=None).first():
             db.add(models.Alocacao(colaborador_id=ana.id, quarto_id=q101.id, data_entrada=date(2026, 1, 10)))
             q101.ocupacao_atual += 1
 
