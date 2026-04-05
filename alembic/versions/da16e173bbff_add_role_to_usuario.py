@@ -19,12 +19,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-<<<<<<< HEAD
-    op.add_column('usuarios', sa.Column('role', sa.String(length=20), nullable=False, server_default='user'))
-=======
     # role já criado na migration inicial (a504b2bccfd6)
     pass
->>>>>>> d2d39ab11b1ac8d67f5285f54899049eb9d202d5
 
 
 def downgrade() -> None:
